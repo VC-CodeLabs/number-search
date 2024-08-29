@@ -67,8 +67,7 @@ namespace NumberTumbler
                         //Is it a line ending?
                         if (c == "\n")
                         {
-                            if (num1 != null) //Did we find a number?
-                                outputFile.Write(Encoding.UTF8.GetBytes($"{num1}{num2}\n"));
+                            outputFile.Write(Encoding.UTF8.GetBytes($"{num1}{num2}\n")); //Write it!
                             num1 = num2 = null; //Reset
                         }
                     }
