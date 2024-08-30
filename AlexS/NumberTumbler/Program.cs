@@ -38,7 +38,7 @@ namespace NumberTumbler
             {
                 //Open file streams, disposing at end of block w/ using statement
                 using FileStream inputFile = new(inputFilePath, FileMode.Open);
-                using FileStream outputFile = new(outputFilePath, FileMode.OpenOrCreate);
+                using FileStream outputFile = new(outputFilePath, FileMode.Create);
 
                 //Output number trackers (two per line - first and last number)
                 int? num1 = null;
