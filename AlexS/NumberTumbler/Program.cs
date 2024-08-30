@@ -1,6 +1,7 @@
 ﻿/*
  * Number Tumbler!
  * This solution marches input files via an allocated buffer, using some potentially unsafe char conversions.
+ * It should theoretically be able to handle very large files, with lines of arbitrary length.
  *
  * Program can be passed in optional file parameters:
  * > NumberTumbler.exe [input path] [output path]
@@ -22,16 +23,11 @@ namespace NumberTumbler
         /// <param name="args">File arguments: [input] [output]</param>
         static void Main(string[] args)
         {
-            //Standard file paths:
-            //  input: Defaults to same folder
-            //  output: Defaults to OS-specific user folder ("/home/user/output.txt" might be invalid)
-            string inputFilePath = "./sampleFile.txt";
-            string outputFilePath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "output.txt"
-            );
+            //Standard file paths, if unspecified below
+            string inputFilePath = "./input.txt";
+            string outputFilePath = "./output.txt";
 
-            //Read in file arguments if passed
+            //Read in file arguments, if passed
             if (args.Length > 0)
                 inputFilePath = args[0];
             if (args.Length > 1)
@@ -49,7 +45,7 @@ namespace NumberTumbler
                 int? num2 = null;
 
                 //Allocate input buffer and begin reading input file
-                byte[] buffer = new byte[4096];
+                byte[] buffer = new byte[32 * 1024]; //32 Kb buffer
                 while (inputFile.Read(buffer, 0, buffer.Length) > 0)
                 {
                     //Convert each byte to character from unicode (or smaller)
@@ -75,7 +71,7 @@ namespace NumberTumbler
 
                 //Write the output file
                 outputFile.Flush();
-                Console.WriteLine($"Wrote {outputFilePath} ({outputFile.Length} bytes)");
+                Console.WriteLine($"Wrote {outputFile.Name} ({outputFile.Length} bytes)");
             }
             catch (Exception ex)
             {
