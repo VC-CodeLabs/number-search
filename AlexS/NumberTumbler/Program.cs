@@ -46,18 +46,22 @@ namespace NumberTumbler
 
                 //Allocate input buffer and begin reading input file
                 byte[] buffer = new byte[32 * 1024]; //32 Kb buffer
-                while (inputFile.Read(buffer, 0, buffer.Length) > 0)
+                int ReadNext() => inputFile.Read(buffer, 0, buffer.Length);
+                for (int bytesRead = ReadNext(); bytesRead > 0; bytesRead = ReadNext())
                 {
-                    //Convert each byte to character from unicode (or smaller)
-                    foreach (string c in buffer.Select(c => char.ConvertFromUtf32(c)))
+                    //For each byte we've read...
+                    for (int i = 0; i < bytesRead; i++)
                     {
+                        //Convert to character from unicode (or smaller)
+                        string c = char.ConvertFromUtf32(buffer[i]);
+
                         //Is it a number?
-                        if (int.TryParse(c, out int i))
+                        if (int.TryParse(c, out int n))
                         {
                             if (num1 == null) //First number?
-                                num1 = num2 = i; //Cool, set both ("a3e" should print "33")
+                                num1 = num2 = n; //Cool, set both ("a3e" should print "33")
                             else
-                                num2 = i; //Just set 2nd (end) number
+                                num2 = n; //Just set 2nd (end) number
                         }
 
                         //Is it a line ending?
