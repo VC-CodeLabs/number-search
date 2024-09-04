@@ -45,7 +45,7 @@ int main() {
     char result[] = {'0', '0', '\0'};
 
     // Read the file line by line
-    while (fgets(line, MAX_LENGTH, inputFile)) {
+    while (fgets(line, MAX_LENGTH + 1, inputFile)) {
         calc(line, result);
         fputs(result, outputFile);
         fputc('\n', outputFile);
